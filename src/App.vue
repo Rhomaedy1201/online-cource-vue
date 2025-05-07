@@ -13,5 +13,4 @@ export default {
 
 <template>
   <RouterView />
-  <router-view />
 </template>
