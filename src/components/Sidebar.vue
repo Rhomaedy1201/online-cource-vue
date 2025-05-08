@@ -32,6 +32,30 @@
               <span>Role</span>
             </router-link>
           </li>
+          <li class="sidebar-item" :class="{ active: isActive('/user') }">
+            <router-link to="/user" class="sidebar-link">
+              <i class="bi bi-grid-fill"></i>
+              <span>User</span>
+            </router-link>
+          </li>
+          <li class="sidebar-item" :class="{ active: isActive('/cource') }">
+            <router-link to="/cource" class="sidebar-link">
+              <i class="bi bi-grid-fill"></i>
+              <span>Cource</span>
+            </router-link>
+          </li>
+          <li class="sidebar-item" :class="{ active: isActive('/module') }">
+            <router-link to="/module" class="sidebar-link">
+              <i class="bi bi-grid-fill"></i>
+              <span>Module</span>
+            </router-link>
+          </li>
+          <li class="sidebar-item" :class="{ active: isActive('/enrollment') }">
+            <router-link to="/enrollment" class="sidebar-link">
+              <i class="bi bi-grid-fill"></i>
+              <span>Enrollment</span>
+            </router-link>
+          </li>
           <li class="sidebar-item">
             <a
               type="button"
