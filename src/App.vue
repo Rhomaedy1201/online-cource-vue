@@ -2,6 +2,10 @@
 import { RouterLink, RouterView } from "vue-router";
 
 export default {
+  components: {
+    RouterLink,
+    RouterView,
+  },
   mounted() {
     const script = document.createElement("script");
     script.src = "/compiled/js/app.js";

@@ -8,7 +8,7 @@ export default {
 </script>
 
 <template>
-  <LayoutApp title="asdasd">
+  <LayoutApp title="Dashboard" subtitle="">
     <section class="row">
       <div class="col-12 col-lg-">
         <div class="row">
