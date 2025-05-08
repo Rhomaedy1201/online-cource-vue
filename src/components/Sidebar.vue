@@ -41,7 +41,7 @@
           <li class="sidebar-item" :class="{ active: isActive('/cource') }">
             <router-link to="/cource" class="sidebar-link">
               <i class="bi bi-grid-fill"></i>
-              <span>Cource</span>
+              <span>Course</span>
             </router-link>
           </li>
           <li class="sidebar-item" :class="{ active: isActive('/module') }">
