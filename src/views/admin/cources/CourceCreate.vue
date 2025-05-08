@@ -14,9 +14,9 @@ export default {
         published: false,
         instructor_id: "",
         attachment: null,
+        useImport: false, // Switch untuk memilih import atau input manual
       },
       instructors: [
-        // Simulasi data, nanti kamu fetch dari API
         { id: "1", name: "John Doe" },
         { id: "2", name: "Jane Smith" },
       ],
@@ -44,6 +44,10 @@ export default {
         }
         this.form.attachment = file;
       }
+    },
+    downloadTemplateExcel() {
+      // Arahkan ke file template Excel yang sudah disiapkan
+      window.location.href = "/path/to/excel-template.xlsx";
     },
     saveCourse() {
       console.log("Data kursus:", this.form);
@@ -83,47 +87,90 @@ export default {
                 ></textarea>
               </div>
 
-              <!-- Syllabus Dinamis -->
+              <!-- Switch untuk memilih cara mengisi silabus -->
               <div class="form-group mt-3">
-                <label>Outline Silabus</label>
-                <div
-                  class="border rounded p-3 mb-2"
-                  v-for="(item, index) in form.syllabus"
-                  :key="index"
-                >
-                  <div
-                    class="d-flex justify-content-between align-items-center mb-2"
-                  >
-                    <strong>Bagian {{ index + 1 }}</strong>
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-danger"
-                      @click="removeSyllabus(index)"
-                      v-if="form.syllabus.length > 1"
-                    >
-                      Hapus
-                    </button>
-                  </div>
+                <label>Pilih Cara Mengisi Outline Silabus</label>
+                <div class="form-check form-switch">
                   <input
-                    v-model="item.judul"
-                    type="text"
-                    class="form-control mb-2"
-                    placeholder="Judul Bagian"
+                    v-model="form.useImport"
+                    class="form-check-input"
+                    type="checkbox"
+                    id="flexSwitchCheckImport"
                   />
-                  <textarea
-                    v-model="item.deskripsi"
-                    class="form-control"
-                    placeholder="Deskripsi Bagian"
-                    rows="2"
-                  ></textarea>
+                  <label class="form-check-label" for="flexSwitchCheckImport">
+                    {{ form.useImport ? "Impor Silabus" : "Isi Manual" }}
+                  </label>
                 </div>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-secondary mt-2"
-                  @click="addSyllabus"
-                >
-                  Tambah Bagian
-                </button>
+              </div>
+
+              <!-- Outline Silabus Berdasarkan Pilihan -->
+              <div v-if="!form.useImport">
+                <!-- Input Manual Silabus -->
+                <div class="form-group mt-3">
+                  <label>Outline Silabus</label>
+                  <div
+                    class="border rounded p-3 mb-2"
+                    v-for="(item, index) in form.syllabus"
+                    :key="index"
+                  >
+                    <div
+                      class="d-flex justify-content-between align-items-center mb-2"
+                    >
+                      <strong>Bagian {{ index + 1 }}</strong>
+                      <button
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        @click="removeSyllabus(index)"
+                        v-if="form.syllabus.length > 1"
+                      >
+                        Hapus
+                      </button>
+                    </div>
+                    <input
+                      v-model="item.judul"
+                      type="text"
+                      class="form-control mb-2"
+                      placeholder="Judul Bagian"
+                    />
+                    <textarea
+                      v-model="item.deskripsi"
+                      class="form-control"
+                      placeholder="Deskripsi Bagian"
+                      rows="2"
+                    ></textarea>
+                  </div>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-secondary mt-2"
+                    @click="addSyllabus"
+                  >
+                    Tambah Bagian
+                  </button>
+                </div>
+              </div>
+
+              <div v-else>
+                <!-- Input untuk impor silabus -->
+                <div class="form-group mt-3">
+                  <label>Impor Silabus (File Excel)</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept=".xlsx, .xls"
+                    @change="handleFileUpload"
+                  />
+                </div>
+
+                <!-- Tombol Download Template Excel -->
+                <div class="mt-3">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    @click="downloadTemplateExcel"
+                  >
+                    Download Template Excel
+                  </button>
+                </div>
               </div>
 
               <!-- Published Switch -->

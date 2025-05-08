@@ -134,4 +134,18 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem("token");
+
+  if (to.meta.requiresAuth && !token) {
+    return next({ name: "login" });
+  }
+
+  if (to.meta.guest && token) {
+    return next({ name: "dashboard" });
+  }
+
+  next();
+});
+
 export default router;
