@@ -58,10 +58,11 @@ export default {
         });
 
         const token = response.data.token;
+        const permissions = response.data.user.role.permissions;
 
         localStorage.setItem("token", token);
+        localStorage.setItem("permissions", permissions);
 
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         this.$router.push("/dashboard");
       } catch (err) {
         this.error =

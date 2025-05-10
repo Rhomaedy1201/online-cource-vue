@@ -1,12 +1,3 @@
-<script>
-import LayoutApp from "../layouts/LayoutApp.vue";
-export default {
-  components: {
-    LayoutApp,
-  },
-};
-</script>
-
 <template>
   <LayoutApp title="Dashboard" subtitle="">
     <section class="row">
@@ -93,3 +84,13 @@ export default {
     </section>
   </LayoutApp>
 </template>
+
+<script>
+import LayoutApp from "../layouts/LayoutApp.vue";
+
+export default {
+  components: {
+    LayoutApp,
+  },
+};
+</script>

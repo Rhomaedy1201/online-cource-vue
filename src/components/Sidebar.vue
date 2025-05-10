@@ -104,15 +104,16 @@
             <i class="bx bx-x d-block d-sm-none"></i>
             <span class="d-none d-sm-block">Close</span>
           </button>
-
-          <button
-            type="button"
-            class="btn btn-warning ms-1"
-            data-bs-dismiss="modal"
-          >
-            <i class="bx bx-check d-block d-sm-none"></i>
-            <span class="d-none d-sm-block">Loogout</span>
-          </button>
+          <form @submit.prevent="logout">
+            <button
+              type="submit"
+              class="btn btn-warning ms-1"
+              data-bs-dismiss="modal"
+            >
+              <i class="bx bx-check d-block d-sm-none"></i>
+              <span class="d-none d-sm-block">Loogout</span>
+            </button>
+          </form>
         </div>
       </div>
     </div>
@@ -121,13 +122,46 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const route = useRoute();
+const router = useRouter();
 const isMasterOpen = ref(false);
 
 // Fungsi untuk menandai menu sebagai aktif
 const isActive = (prefix) => {
   return route.path.startsWith(prefix);
+};
+
+function showAlert(msg) {
+  Swal.fire({
+    title: "Berhasil!",
+    text: msg,
+    icon: "success",
+    timer: 1500,
+    timerProgressBar: true,
+    showConfirmButton: false,
+    willClose: () => {
+      router.push({ name: "login" });
+    },
+  });
+}
+
+const token = localStorage.getItem("token");
+axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+const logout = async () => {
+  try {
+    const response = await axios.post("http://localhost:8000/api/logout");
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("permissions");
+
+    showAlert(response.data.message);
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>

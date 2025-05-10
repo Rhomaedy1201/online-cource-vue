@@ -35,16 +35,19 @@ const router = createRouter({
       path: "/",
       name: "leadingPage",
       component: LeadingPage,
+      meta: { guest: true },
     },
     {
       path: "/login",
       name: "login",
       component: LoginPage,
+      meta: { guest: true },
     },
     {
       path: "/dashboard",
       name: "dashboard",
       component: DashboardPage,
+      meta: { requiresAuth: true },
     },
     // ROLES
     {
