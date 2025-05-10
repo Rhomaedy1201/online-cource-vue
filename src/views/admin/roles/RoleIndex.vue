@@ -103,6 +103,7 @@
         </nav>
       </div>
     </div>
+    <LoadingModal :visible="loading" message="Mengambil data role..." />
   </LayoutApp>
 </template>
 
@@ -110,6 +111,8 @@
 <script>
 import axios from "axios";
 import LayoutApp from "../../layouts/LayoutApp.vue";
+import LoadingModal from "@/components/LoadingModal.vue";
+
 import {
   showSuccessAlert,
   showErrorAlert,
@@ -119,6 +122,7 @@ import {
 export default {
   components: {
     LayoutApp,
+    LoadingModal,
   },
   data() {
     return {
@@ -127,6 +131,7 @@ export default {
       page: 1,
       pageLength: 10,
       totalPages: 1,
+      loading: false,
     };
   },
   mounted() {
@@ -134,6 +139,7 @@ export default {
   },
   methods: {
     async getRoles() {
+      this.loading = true;
       try {
         const response = await axios.get("/role", {
           params: {
@@ -147,6 +153,8 @@ export default {
         this.totalPages = response.data.data.last_page;
       } catch (error) {
         console.error(error);
+      } finally {
+        this.loading = false;
       }
     },
     handleSearch() {

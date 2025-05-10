@@ -110,21 +110,26 @@
         </nav>
       </div>
     </div>
+    <!-- Loading Modal -->
+    <LoadingModal :visible="loading" message="Mengambil data user..." />
   </LayoutApp>
 </template>
 
 <script>
 import axios from "axios";
 import LayoutApp from "../../layouts/LayoutApp.vue";
+import LoadingModal from "@/components/LoadingModal.vue";
 
 export default {
   components: {
     LayoutApp,
+    LoadingModal,
   },
   data() {
     return {
       users: [],
       search: "",
+      loading: false,
       page: 1,
       pageLength: 10,
       totalPages: 1,
@@ -135,8 +140,9 @@ export default {
   },
   methods: {
     async getUser() {
+      this.loading = true;
       try {
-        const response = await axios.get("/user", {
+        const response = await axios.get("/users", {
           params: {
             search: this.search,
             page: this.page,
@@ -148,6 +154,8 @@ export default {
         this.totalPages = response.data.data.last_page;
       } catch (error) {
         console.error(error);
+      } finally {
+        this.loading = false;
       }
     },
     handleSearch() {
