@@ -1,62 +1,3 @@
-<script>
-import LayoutApp from "../../layouts/LayoutApp.vue";
-
-export default {
-  components: {
-    LayoutApp,
-  },
-  data() {
-    return {
-      form: {
-        title: "",
-        description: "",
-        syllabus: [{ judul: "", deskripsi: "" }],
-        published: false,
-        instructor_id: "",
-        attachment: null,
-        useImport: false, // Switch untuk memilih import atau input manual
-      },
-      instructors: [
-        { id: "1", name: "John Doe" },
-        { id: "2", name: "Jane Smith" },
-      ],
-    };
-  },
-  methods: {
-    addSyllabus() {
-      this.form.syllabus.push({ judul: "", deskripsi: "" });
-    },
-    removeSyllabus(index) {
-      this.form.syllabus.splice(index, 1);
-    },
-    handleFileUpload(event) {
-      const file = event.target.files[0];
-      if (file) {
-        if (file.type !== "application/pdf") {
-          alert("Hanya file PDF yang diperbolehkan.");
-          event.target.value = null;
-          return;
-        }
-        if (file.size < 100 * 1024 || file.size > 500 * 1024) {
-          alert("Ukuran file harus antara 100KB - 500KB.");
-          event.target.value = null;
-          return;
-        }
-        this.form.attachment = file;
-      }
-    },
-    downloadTemplateExcel() {
-      // Arahkan ke file template Excel yang sudah disiapkan
-      window.location.href = "/path/to/excel-template.xlsx";
-    },
-    saveCourse() {
-      console.log("Data kursus:", this.form);
-      // Simpan ke backend pakai axios/fetch di sini
-    },
-  },
-};
-</script>
-
 <template>
   <LayoutApp title="Tambah Kursus" subtitle="Form untuk tambah kursus baru">
     <section id="create-course">
@@ -165,7 +106,7 @@ export default {
                 <div class="mt-3">
                   <button
                     type="button"
-                    class="btn btn-secondary"
+                    class="btn btn-secondary bg-success text-white"
                     @click="downloadTemplateExcel"
                   >
                     Download Template Excel
@@ -230,3 +171,62 @@ export default {
     </section>
   </LayoutApp>
 </template>
+
+<script>
+import LayoutApp from "../../layouts/LayoutApp.vue";
+import axios from "axios";
+
+export default {
+  components: {
+    LayoutApp,
+  },
+  data() {
+    return {
+      form: {
+        title: "",
+        description: "",
+        syllabus: [{ judul: "", deskripsi: "" }],
+        published: false,
+        instructor_id: "",
+        attachment: null,
+        useImport: false,
+      },
+      instructors: [
+        { id: "1", name: "John Doe" },
+        { id: "2", name: "Jane Smith" },
+      ],
+    };
+  },
+  methods: {
+    addSyllabus() {
+      this.form.syllabus.push({ judul: "", deskripsi: "" });
+    },
+    removeSyllabus(index) {
+      this.form.syllabus.splice(index, 1);
+    },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.type !== "application/pdf") {
+          alert("Hanya file PDF yang diperbolehkan.");
+          event.target.value = null;
+          return;
+        }
+        if (file.size < 100 * 1024 || file.size > 500 * 1024) {
+          alert("Ukuran file harus antara 100KB - 500KB.");
+          event.target.value = null;
+          return;
+        }
+        this.form.attachment = file;
+      }
+    },
+    async downloadTemplateExcel() {
+      window.open(`${import.meta.env.VITE_API_URL}/download-silabus`, "_blank");
+    },
+    saveCourse() {
+      console.log("Data kursus:", this.form);
+      // Simpan ke backend pakai axios/fetch di sini
+    },
+  },
+};
+</script>

@@ -154,7 +154,7 @@ axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
 const logout = async () => {
   try {
-    const response = await axios.post("http://localhost:8000/api/logout");
+    const response = await axios.post("/logout");
 
     localStorage.removeItem("token");
     localStorage.removeItem("permissions");

@@ -63,15 +63,18 @@
               <td>{{ user.role?.name }}</td>
               <td>
                 <router-link
-                  to="/user-edit/1"
+                  :to="`/user-edit/${user.id}`"
                   class="btn icon icon-left btn-primary"
                 >
                   <i data-feather="edit"></i> Edit
                 </router-link>
-                <a href="#" class="btn icon icon-left btn-danger ms-2">
+                <button
+                  @click="handleDelete(user.id)"
+                  class="btn icon icon-left btn-danger ms-2"
+                >
                   <i data-feather="delete"></i>
                   Delete
-                </a>
+                </button>
               </td>
             </tr>
             <tr v-if="users.length === 0">
@@ -119,6 +122,12 @@
 import axios from "axios";
 import LayoutApp from "../../layouts/LayoutApp.vue";
 import LoadingModal from "@/components/LoadingModal.vue";
+
+import {
+  showErrorAlert,
+  showConfirmDeleteAlert,
+  showSuccessAlert,
+} from "@/utils/alert";
 
 export default {
   components: {
@@ -170,6 +179,20 @@ export default {
       this.pageLength = parseInt(event.target.value);
       this.page = 1;
       this.getUser();
+    },
+
+    async handleDelete(id) {
+      const confirm = await showConfirmDeleteAlert();
+      if (confirm.isConfirmed) {
+        try {
+          await axios.delete(`/users/${id}`);
+          showSuccessAlert("User berhasil dihapus");
+          this.getUser();
+        } catch (error) {
+          showErrorAlert("Gagal menghapus user " + error);
+          console.error(error);
+        }
+      }
     },
   },
 };
